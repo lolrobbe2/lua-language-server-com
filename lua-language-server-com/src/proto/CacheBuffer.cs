@@ -53,7 +53,8 @@ namespace src.proto
         {
             lock (_lock)
             {
-                Array.Clear(_buffer, 0, _buffer.Length);
+                if (_buffer is not null)
+                    Array.Clear(_buffer, 0, _buffer.Length);
             }
         }
     }

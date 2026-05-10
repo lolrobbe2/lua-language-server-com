@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lua-language-server-com", "lua-language-server-com\lua-language-server-com.csproj", "{48C6CCAC-B4FD-1444-BD07-796729BE3B3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "lua-language-server.tests", "lua-language-server-tests\lua-language-server.tests.csproj", "{9DEE9A16-09B1-CEA0-5261-5D2DBE62A77E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{48C6CCAC-B4FD-1444-BD07-796729BE3B3D}.Debug|x64.ActiveCfg = Debug|x64
+		{48C6CCAC-B4FD-1444-BD07-796729BE3B3D}.Debug|x64.Build.0 = Debug|x64
+		{48C6CCAC-B4FD-1444-BD07-796729BE3B3D}.Release|x64.ActiveCfg = Release|x64
+		{48C6CCAC-B4FD-1444-BD07-796729BE3B3D}.Release|x64.Build.0 = Release|x64
+		{9DEE9A16-09B1-CEA0-5261-5D2DBE62A77E}.Debug|x64.ActiveCfg = Debug|x64
+		{9DEE9A16-09B1-CEA0-5261-5D2DBE62A77E}.Debug|x64.Build.0 = Debug|x64
+		{9DEE9A16-09B1-CEA0-5261-5D2DBE62A77E}.Release|x64.ActiveCfg = Release|x64
+		{9DEE9A16-09B1-CEA0-5261-5D2DBE62A77E}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

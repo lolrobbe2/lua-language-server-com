@@ -1,7 +1,6 @@
 workspace "lua-language-server-com"
 architecture "x86_64"
    configurations { "Debug", "Release" }
-   startproject "lua-language-server-com"
 
    project "lua-language-server-com"
       kind "ConsoleApp" -- CLI application
@@ -10,7 +9,7 @@ architecture "x86_64"
       language "C#"
       targetdir "bin/%{cfg.buildcfg}"
       files { "%{prj.name}/src/**.cs" } -- Include all C# source files
-      nuget {  }
+      nuget { "StreamJsonRpc:2.24.84","K4os.Compression.LZ4.Streams:1.3.8" }
       vsprops {
          PublishSingleFile = "true",
          SelfContained = "true",
@@ -29,9 +28,10 @@ architecture "x86_64"
       
       -- COPY EXECUTABLE TO TEST PROJECT
       postbuildcommands {
-         "{COPY} %{cfg.buildtarget.abspath} %{wks.location}/lua-language-server.Tests/"
+         "{COPY} %{cfg.targetdir}/lua-language-server-com.exe %{wks.location}/lua-language-server.tests/bin"
       }
-   project "lua-language-server.Tests"
+
+   project "lua-language-server.tests"
       location "lua-language-server-tests"
       kind "ConsoleApp"
       language "C#"
@@ -39,17 +39,18 @@ architecture "x86_64"
       targetdir "bin/%{cfg.buildcfg}"
       objdir "obj/%{cfg.buildcfg}"
 
-   targetdir "bin/%{cfg.buildcfg}"
-      files { "%{prj.name}/src/**.cs" } -- Include all C# source files
-      nuget { "MSTest:4.2.2" }
+      targetdir "bin/%{cfg.buildcfg}"
+      files { "%{wks.location}/lua-language-server-tests/src/**.cs" } -- Include all C# source files
+      nuget { "xunit.v3:4.0.0-pre.108" }
       vsprops {
          PublishSingleFile = "true",
          SelfContained = "true",
          IncludeNativeLibrariesForSelfExtract = "true",
          PublishTrimmed =  "true",
-         Nullable = "enable"
+         Nullable = "enable",
+         EnableMSTestRunner = "true"
+
       }
-      links {"lua-language-server-com"}
       filter "configurations:Debug"
          defines { "DEBUG" }
          optimize "Off"
@@ -58,3 +59,4 @@ architecture "x86_64"
          symbols "Off"
          defines { "NDEBUG" }
          optimize "On"
+      links { "lua-language-server-com" }

@@ -9,7 +9,7 @@ architecture "x86_64"
       language "C#"
       targetdir "bin/%{cfg.buildcfg}"
       files { "%{prj.name}/src/**.cs" } -- Include all C# source files
-      nuget { "StreamJsonRpc:2.24.84","K4os.Compression.LZ4.Streams:1.3.8" }
+      nuget { "StreamJsonRpc:2.24.84","K4os.Compression.LZ4.Streams:1.3.8","Nerdbank.MessagePack:1.1.62" }
       vsprops {
          PublishSingleFile = "true",
          SelfContained = "true",
@@ -60,3 +60,4 @@ architecture "x86_64"
          defines { "NDEBUG" }
          optimize "On"
       links { "lua-language-server-com" }
+      

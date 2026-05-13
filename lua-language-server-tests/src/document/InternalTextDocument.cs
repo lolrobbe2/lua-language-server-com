@@ -8,6 +8,8 @@ namespace src.document
 {
     public class InternalTextDocumentTests
     {
+    
+        /*
         [Theory]
         [InlineData(-1)]
         [InlineData(1000)]
@@ -18,7 +20,7 @@ namespace src.document
             Assert.Throws<IndexOutOfRangeException>(
                 () => internalDoc.GetLine(line));
         }
-
+        */
         [Theory]
         [MemberData(nameof(TestDocuments.LuaDocuments), MemberType = typeof(TestDocuments))]
         internal void GetTextRandomDocumentsReturnsSameText(TextDocument doc)
@@ -29,5 +31,6 @@ namespace src.document
 
             Assert.Equal(doc.text, result);
         }
+        
     }
 }

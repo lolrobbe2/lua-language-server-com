@@ -1,4 +1,4 @@
-﻿using src.proto;
+﻿using src.buffer;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,9 +36,9 @@ namespace src
                     /* if lenght is 0 => cleared/invalidated buffer remove */
                     _cachedFrames.Remove(frameCache.Key);
                     continue;
-                } else if(_frames.Count < frameCache.Key) {
+                } else if(_frames.Count <= frameCache.Key) {
                     /* range has not be added to the list => increase compressed range size */
-                    _frames.AddRange(Enumerable.Repeat(default(CompressedBuffer), (int)(frameCache.Key - _frames.Count)));
+                    _frames.AddRange(Enumerable.Repeat(new CompressedBuffer(), (int)(frameCache.Key - _frames.Count + 1)));
                 }
                 
                 CacheBuffer buffer = frameCache.Value;
@@ -72,7 +72,7 @@ namespace src
             }
             else
             {
-                CacheBuffer newCacheBuffer = new CacheBuffer(200, _frameSize);
+                CacheBuffer newCacheBuffer = new CacheBuffer(200);
                 CompressedBuffer compressed = _frames[(int)currentIndex];
                 byte[] tempBuffer = new byte[compressed.OriginalLength];
 
@@ -133,10 +133,10 @@ namespace src
 
             if (_cachedFrames.TryGetValue(currentIndex, out CacheBuffer cacheBuffer))
             {
-                cacheBuffer.Write(buffer,(int)(offset + frameOffset), (int)(_frameSize - frameOffset));
+                cacheBuffer.Write(buffer,offset, (int)(count % _frameSize));
                 return (int)(_frameSize - frameOffset);
             } else {
-                cacheBuffer = new CacheBuffer(200, _frameSize);
+                cacheBuffer = new CacheBuffer(200);
                 _cachedFrames.Add(currentIndex, cacheBuffer);
                 /* reattempt the cached write */
                 return WriteCached(buffer, offset, count);

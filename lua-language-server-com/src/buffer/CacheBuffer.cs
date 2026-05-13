@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 using System.Timers;
 #nullable enable
-namespace src.proto
+namespace src.buffer
 {
     internal class CacheBuffer
     {
         byte[]? _buffer;
         private Timer? _timer;
         public Int64 Lenght => _buffer?.LongLength ?? 0;
-        public Int64 Offset;
-        private Int64 _frameSize;
         private readonly object _lock = new object();
         private double _interval;
-        public CacheBuffer(double intervalMs, Int64 frameSize){
+
+        public event Action<byte[], Int64>? OnClear;
+        public CacheBuffer(double intervalMs){
             _interval = intervalMs;
         }
         public byte[] GetBytes(){
@@ -24,11 +24,10 @@ namespace src.proto
             lock (_lock)
             {
                 if(_buffer is null) {
-                    _buffer = new byte[_frameSize];
+                    _buffer = new byte[length];
                 }
                 Buffer.BlockCopy(buffer, offset, _buffer!, 0, length);
-                if (_timer is not null)
-                    StartTimer();
+                StartTimer();
             }
         }
 
@@ -39,8 +38,7 @@ namespace src.proto
                 if (_buffer is null)
                     return;
                 Buffer.BlockCopy(_buffer!, 0, buffer, 0, length);
-                if(_timer is not null) 
-                    StartTimer();
+                StartTimer();
             }
         }
         public void StartTimer(){
@@ -49,13 +47,22 @@ namespace src.proto
             _timer.AutoReset = false;
             _timer.Start();
         }
+        public bool IsCleared(){
+            return _buffer == null;
+        }
         private void ClearBuffer(object? sender, ElapsedEventArgs e)
         {
+            Clear();
+        }
+        public void Clear() {
+            if (_buffer is null)
+                return;
             lock (_lock)
             {
-                if (_buffer is not null)
-                    Array.Clear(_buffer, 0, _buffer.Length);
+                OnClear?.Invoke(_buffer!, Lenght);
+                _buffer = null;
             }
         }
+
     }
 }
